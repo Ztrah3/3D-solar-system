@@ -19,17 +19,21 @@ const mercuryTexture = textureLoader.load("/textures/2k_mercury.jpg");
 const venusTexture = textureLoader.load("/textures/2k_venus_surface.jpg");
 const earthTexture = textureLoader.load("/textures/2k_earth_daymap.jpg");
 const marsTexture = textureLoader.load("/textures/2k_mars.jpg");
+const jupiterTexture = textureLoader.load("/textures/2k_jupiter.jpg");
+const saturnTexture = textureLoader.load("/textures/2k_saturn.jpg");
+const uranusTexture = textureLoader.load("/textures/2k_uranus.jpg");
+const neptuneTexture = textureLoader.load("/textures/2k_neptune.jpg");
 const moonTexture = textureLoader.load("/textures/2k_moon.jpg");
 
 const backgroundCubemap = cubeTextureLoader
-.load( [
-  'px.png',
-  'nx.png',
-  'py.png',
-  'ny.png',
-  'pz.png',
-  'nz.png'
-] );
+  .load([
+    'px.png',
+    'nx.png',
+    'py.png',
+    'ny.png',
+    'pz.png',
+    'nz.png'
+  ]);
 
 scene.background = backgroundCubemap
 
@@ -46,6 +50,18 @@ const earthMaterial = new THREE.MeshStandardMaterial({
 const marsMaterial = new THREE.MeshStandardMaterial({
   map: marsTexture,
 });
+const jupiterMaterial = new THREE.MeshStandardMaterial({
+  map: jupiterTexture,
+});
+const saturnMaterial = new THREE.MeshStandardMaterial({
+  map: saturnTexture,
+});
+const uranusMaterial = new THREE.MeshStandardMaterial({
+  map: uranusTexture,
+});
+const neptuneMaterial = new THREE.MeshStandardMaterial({
+  map: neptuneTexture,
+});
 const moonMaterial = new THREE.MeshStandardMaterial({
   map: moonTexture,
 });
@@ -57,31 +73,31 @@ const sunMaterial = new THREE.MeshBasicMaterial({
 });
 
 const sun = new THREE.Mesh(sphereGeometry, sunMaterial);
-sun.scale.setScalar(5);
+sun.scale.setScalar(15);
 scene.add(sun);
 
 const planets = [
   {
     name: "Mercury",
-    radius: 0.5,
-    distance: 10,
-    speed: 0.01,
+    radius: 0.4,
+    distance: 20,
+    speed: 0.05,
     material: mercuryMaterial,
     moons: [],
   },
   {
     name: "Venus",
     radius: 0.8,
-    distance: 15,
-    speed: 0.007,
+    distance: 25,
+    speed: 0.033,
     material: venusMaterial,
     moons: [],
   },
   {
     name: "Earth",
     radius: 1,
-    distance: 20,
-    speed: 0.005,
+    distance: 33,
+    speed: 0.022,
     material: earthMaterial,
     moons: [
       {
@@ -95,8 +111,8 @@ const planets = [
   {
     name: "Mars",
     radius: 0.7,
-    distance: 25,
-    speed: 0.003,
+    distance: 40,
+    speed: 0.016,
     material: marsMaterial,
     moons: [
       {
@@ -114,9 +130,97 @@ const planets = [
       },
     ],
   },
+  {
+    name: "Jupiter",
+    radius: 5,
+    distance: 60,
+    speed: 0.0098,
+    material: jupiterMaterial,
+    moons: [
+      {
+        name: "Europa",
+        radius: 0.1,
+        distance: 1.3,
+        speed: 0.02,
+      },
+      {
+        name: "Ganymede",
+        radius: 0.2,
+        distance: 1.7,
+        speed: 0.015,
+        color: 0xffffff,
+      },
+    ],
+  },
+  {
+    name: "Saturn",
+    radius: 3.7,
+    distance: 85,
+    speed: 0.007,
+    material: saturnMaterial,
+    moons: [
+      {
+        name: "Titan",
+        radius: 0.1,
+        distance: 1.3,
+        speed: 0.02,
+      },
+      {
+        name: "Rhea",
+        radius: 0.2,
+        distance: 1.7,
+        speed: 0.015,
+        color: 0xffffff,
+      },
+    ],
+  },
+  {
+    name: "Uranus",
+    radius: 2.7,
+    distance: 105,
+    speed: 0.005,
+    material: uranusMaterial,
+    moons: [
+      {
+        name: "Titania",
+        radius: 0.1,
+        distance: 1.3,
+        speed: 0.02,
+      },
+      {
+        name: "Oberon",
+        radius: 0.2,
+        distance: 1.7,
+        speed: 0.015,
+        color: 0xffffff,
+      },
+    ],
+  },
+  {
+    name: "Neptune",
+    radius: 2.5,
+    distance: 120,
+    speed: 0.0045,
+    material: neptuneMaterial,
+    moons: [
+      {
+        name: "Triton",
+        radius: 0.1,
+        distance: 1.3,
+        speed: 0.02,
+      },
+      {
+        name: "Psamahte",
+        radius: 0.2,
+        distance: 1.7,
+        speed: 0.015,
+        color: 0xffffff,
+      },
+    ],
+  },
 ];
 
-const createPlanet = (planet) =>{
+const createPlanet = (planet) => {
   const planetMesh = new THREE.Mesh(
     sphereGeometry,
     planet.material
@@ -126,7 +230,7 @@ const createPlanet = (planet) =>{
   return planetMesh
 }
 
-const createMoon = (moon) =>{
+const createMoon = (moon) => {
   const moonMesh = new THREE.Mesh(
     sphereGeometry,
     moonMaterial
@@ -137,7 +241,7 @@ const createMoon = (moon) =>{
 }
 
 
-const planetMeshes = planets.map((planet) =>{
+const planetMeshes = planets.map((planet) => {
   const planetMesh = createPlanet(planet)
   scene.add(planetMesh)
 
@@ -162,7 +266,7 @@ const pointLight = new THREE.PointLight(
   2
 )
 scene.add(pointLight)
- 
+
 // initialize the camera
 const camera = new THREE.PerspectiveCamera(
   35,
@@ -194,11 +298,11 @@ window.addEventListener("resize", () => {
 
 // render loop
 const renderloop = () => {
-  planetMeshes.forEach((planet, planetIndex)=>{
-    planet.rotation.y +=  planets[planetIndex].speed
+  planetMeshes.forEach((planet, planetIndex) => {
+    planet.rotation.y += planets[planetIndex].speed
     planet.position.x = Math.sin(planet.rotation.y) * planets[planetIndex].distance
     planet.position.z = Math.cos(planet.rotation.y) * planets[planetIndex].distance
-    planet.children.forEach((moon, moonIndex) =>{
+    planet.children.forEach((moon, moonIndex) => {
       moon.rotation.y += planets[planetIndex].moons[moonIndex].speed
       moon.position.x = Math.sin(moon.rotation.y) * planets[planetIndex].moons[moonIndex].distance
       moon.position.z = Math.cos(moon.rotation.y) * planets[planetIndex].moons[moonIndex].distance
